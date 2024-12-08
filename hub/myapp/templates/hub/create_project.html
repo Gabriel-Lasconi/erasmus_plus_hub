@@ -1,0 +1,27 @@
+<!-- create_project.html -->
+{% extends "hub/base.html" %}
+{% block content %}
+<div class="container py-5">
+    <h1>Create Project</h1>
+    <form method="post">
+        {% csrf_token %}
+        
+        <!-- Text area for Pasting Message -->
+{#        <div class="mb-4">#}
+{#            <label for="message">Paste Message</label>#}
+{#            {{ form.message }}#}
+{#        </div>#}
+
+        <!-- Existing Form Fields -->
+        <div class="mb-4">
+            {{ form.as_p }}
+        </div>
+
+        <!-- Buttons -->
+{#        <div class="d-flex justify-content-between">#}
+{#            <button type="submit" name="process_message" class="btn btn-primary">Process Message</button>#}
+{#            <button type="submit" class="btn btn-success">Save Project</button>#}
+{#        </div>#}
+    </form>
+</div>
+{% endblock %}

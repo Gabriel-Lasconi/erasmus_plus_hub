@@ -1,0 +1,16 @@
+{% extends 'hub/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title">{{ project.name }}</h2>
+        <p class="card-text"><strong>Description:</strong> {{ project.description }}</p>
+        <p class="card-text"><strong>Country:</strong> {{ project.country }}</p>
+        <p class="card-text"><strong>Deadline:</strong> {{ project.deadline }}</p>
+        <p>
+            <a href="{{ project.infopack_link }}" class="btn btn-outline-primary" target="_blank">Infopack</a>
+            <a href="{{ project.application_link }}" class="btn btn-primary" target="_blank">Apply Now</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
