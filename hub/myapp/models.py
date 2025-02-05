@@ -27,6 +27,7 @@ class SuggestedProject(models.Model):
     deadline = models.DateField()
     submitted_by = models.CharField(max_length=255)
     approved = models.BooleanField(default=False)  # Admin approval system
+    created_at = models.DateTimeField(auto_now_add=True)  # ✅ Add this field
 
 
     def __str__(self):
