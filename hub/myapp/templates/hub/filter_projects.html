@@ -9,6 +9,7 @@
     </div>
 </section>
 
+<!-- Filter Form -->
 <section class="py-4">
     <div class="container">
         <form id="filter-form" class="row g-3">
@@ -23,7 +24,7 @@
             </div>
 
             <!-- Location Filter -->
-            <div class="col-md-4"> 
+            <div class="col-md-4">
                 <label for="filter-location" class="form-label">Location</label>
                 <select id="filter-location" name="country" class="form-select">
                     <option value="">All Locations</option>
@@ -73,9 +74,23 @@
 <!-- Projects Section -->
 <section class="py-5 bg-light">
     <div class="container">
-        <h2 class="mb-4">Filtered Projects</h2>
+        <h2 class="mb-4">Approved Projects</h2>
         <div id="projects-container" class="row">
-            <!-- Projects will be dynamically loaded here -->
+            {% for project in projects %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.title }}</h5>
+                            <p class="card-text"><strong>Country:</strong> {{ project.country }}</p>
+                            <p class="card-text"><strong>Deadline:</strong> {{ project.deadline }}</p>
+                            <p class="card-text"><strong>Submitted by:</strong> {{ project.submitted_by }}</p>
+                            <a href="/projects/{{ project.id }}/" class="btn btn-primary">Learn More</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-muted">No approved projects yet.</p>
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -105,9 +120,10 @@
                             <div class="col-md-4 mb-4">
                                 <div class="card shadow-sm">
                                     <div class="card-body">
-                                        <h5 class="card-title">${project.name}</h5>
+                                        <h5 class="card-title">${project.title}</h5>
                                         <p class="card-text"><strong>Country:</strong> ${project.country}</p>
                                         <p class="card-text"><strong>Deadline:</strong> ${project.deadline}</p>
+                                        <p class="card-text"><strong>Submitted by:</strong> ${project.submitted_by}</p>
                                         <a href="/projects/${project.id}/" class="btn btn-primary">Learn More</a>
                                     </div>
                                 </div>
@@ -120,4 +136,3 @@
 </script>
 
 {% endblock %}
-

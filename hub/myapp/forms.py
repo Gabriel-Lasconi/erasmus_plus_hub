@@ -2,12 +2,7 @@ from django import forms
 from .models import Project
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
-# class ProjectForm(forms.ModelForm):
-#     class Meta:
-#         model = Project
-#         fields = ['name', 'description', 'location', 'type', 'deadline', 'infopack_link', 'application_link']
-#
+from .models import SuggestedProject
 
 class ProjectForm(forms.ModelForm):
     message = forms.CharField(
@@ -27,3 +22,9 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'email', 'password1', 'password2']  # Built-in fields
+
+
+class SuggestedProjectForm(forms.ModelForm):
+    class Meta:
+        model = SuggestedProject
+        fields = ['title', 'description']

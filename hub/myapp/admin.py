@@ -1,3 +1,5 @@
+# myapp/admin.py
+from .models import SuggestedProject
 from django.contrib import admin
 from .models import Project
 
@@ -7,3 +9,16 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ('type', 'country', 'deadline')
     search_fields = ('name', 'description', 'city', 'country')
 
+class SuggestedProjectAdmin(admin.ModelAdmin):
+    list_display = ('title', 'submitted_by', 'approved', 'created_at')
+    list_filter = ('approved',)
+    actions = ["approve_projects"]
+
+    def approve_projects(self, request, queryset):
+        queryset.update(approved=True)
+        self.message_user(request, "Selected projects approved successfully.")
+
+    approve_projects.short_description = "Approve selected projects"
+
+
+admin.site.register(SuggestedProject, SuggestedProjectAdmin)

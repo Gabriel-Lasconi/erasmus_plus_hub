@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Project(models.Model):
     PROJECT_TYPES = [
@@ -17,6 +18,16 @@ class Project(models.Model):
     deadline = models.DateField(blank=True, null=True)  # Deadline of the project
     infopack_link = models.URLField(blank=True, null=True)  # Link to the infopack
     application_link = models.URLField(blank=True, null=True)  # Link to the application form
+
+class SuggestedProject(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    project_type = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
+    deadline = models.DateField()
+    submitted_by = models.CharField(max_length=255)
+    approved = models.BooleanField(default=False)  # Admin approval system
+
 
     def __str__(self):
         return self.name

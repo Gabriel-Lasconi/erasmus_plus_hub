@@ -11,4 +11,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='/'), name='logout'),  # Optional logout route
     path('projects/filter/', views.filter_projects_view, name='filter_projects'),  # Filter projects
     path('filter-projects/', views.filter_projects, name='filter_projects_api'),  # AJAX endpoint
+    path("filter-projects/", views.project_list, name="project_list"),
     ]
