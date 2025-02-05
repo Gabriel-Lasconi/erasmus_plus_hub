@@ -9,7 +9,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_filter = ('type', 'country', 'deadline')
     search_fields = ('name', 'description', 'city', 'country')
 
-@admin.register(SuggestedProject)
+@admin.register(SuggestedProject)  # ✅ Correct way to register a model
 class SuggestedProjectAdmin(admin.ModelAdmin):
     list_display = ("title", "submitted_by", "approved", "created_at")
     list_filter = ("approved", "country")
@@ -22,5 +22,3 @@ class SuggestedProjectAdmin(admin.ModelAdmin):
 
     approve_projects.short_description = "Approve selected projects"
 
-
-admin.site.register(SuggestedProject, SuggestedProjectAdmin)
