@@ -1,0 +1,99 @@
+/* Profile Image */
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #0056b3;
+    object-fit: cover;
+}
+
+/* Profile Card */
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+/* User Info Card */
+.user-info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+/* Bio Text */
+.bio-text {
+    font-size: 1rem;
+    font-style: italic;
+    color: #555;
+}
+
+/* Edit Profile Button */
+.edit-profile-btn {
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease-in-out;
+}
+
+.edit-profile-btn:hover {
+    background: #0056b3;
+    color: white;
+}
+
+/* Badge Styling */
+.badge-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    background: white;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.badge-card img {
+    border-radius: 50%;
+}
+
+.badge-name {
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 15px;
+}
+
+/* Form Styling */
+form .form-label {
+    font-weight: 600;
+}
+
+form input, form textarea, form select {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    width: 100%;
+}
+
+form input:focus, form textarea:focus, form select:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 5px rgba(0, 86, 179, 0.3);
+}
+
+/* Save Button */
+.btn-primary {
+    background: linear-gradient(135deg, #0056b3, #008080);
+    border: none;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #008080, #0056b3);
+    transform: scale(1.05);
+}

@@ -9,7 +9,7 @@ body {
 .hero-section {
     position: relative;
     height: 50vh;
-    background: url('../images/hero.jpg') center/cover no-repeat;
+    background: url('../images/hero1.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;

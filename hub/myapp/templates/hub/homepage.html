@@ -2,20 +2,144 @@
 {% load static %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <h1>Connect & Grow</h1>
-        <p>Explore Erasmus+ opportunities</p>
-        <a href="{% url 'filter_projects' %}" class="btn btn-primary">View Projects</a>
+<!-- Hero Section (Updated) -->
+<section class="hero-slideshow">
+    <div class="slideshow-container">
+        <!-- Slide 1 -->
+        <div class="slide fade">
+            <img src="{% static 'images/hero1.jpg' %}" alt="Erasmus Opportunities">
+            <div class="hero-text">
+                <h1>Opening Minds</h1>
+                <p>Discover yourself with diverse projects</p>
+            </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="slide fade">
+            <img src="{% static 'images/hero2.jpg' %}" alt="Cultural Exchange">
+            <div class="hero-text">
+                <h1>Connect & Grow</h1>
+                <p>Engage in international collaborations</p>
+            </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="slide fade">
+            <img src="{% static 'images/hero3.jpg' %}" alt="Education & Training">
+            <div class="hero-text">
+                <h1>Learn & Explore</h1>
+                <p>Unlock new skills through Erasmus+ programs</p>
+            </div>
+        </div>
+
+        <!-- Navigation Dots -->
+        <div class="dots">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
     </div>
 </section>
 
-<!-- About Section -->
-<section class="py-5">
+<!-- About Erasmus+ (Animated) -->
+<section class="py-5 about-section fade-in">
     <div class="container text-center">
-        <h2 class="text-orange">What is Erasmus+?</h2>
-        <p>Erasmus+ is the EU's program for education, training, and collaboration.</p>
+        <h2 class="section-title">What is Erasmus+?</h2>
+        <p class="section-text">
+            Erasmus+ is the EU's program for education, training, and collaboration,
+            helping individuals grow through cultural exchange.
+        </p>
     </div>
 </section>
+
+<!-- Benefits (With Hover Effects) -->
+<section class="benefits-section">
+    <div class="container text-center">
+        <h2 class="section-title fade-in">Why Join Erasmus+ Hub?</h2>
+        <div class="row">
+            <div class="col-md-4 fade-in delay-1">
+                <div class="benefit-card">
+                    <i class="bi bi-people-fill benefits-icon"></i>
+                    <h4>Networking</h4>
+                    <p>Meet like-minded individuals and build valuable connections.</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in delay-2">
+                <div class="benefit-card">
+                    <i class="bi bi-lightbulb benefits-icon"></i>
+                    <h4>Personal Growth</h4>
+                    <p>Gain new skills and confidence through international experiences.</p>
+                </div>
+            </div>
+            <div class="col-md-4 fade-in delay-3">
+                <div class="benefit-card">
+                    <i class="bi bi-globe benefits-icon"></i>
+                    <h4>Global Opportunities</h4>
+                    <p>Explore projects worldwide and expand your horizons.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials (Animated & Interactive) -->
+<!-- Testimonials Section -->
+<section class="testimonials-section fade-in">
+    <div class="container text-center">
+        <h2 class="section-title">What Our Participants Say</h2>
+        <div class="testimonials-container">
+            <div class="testimonial-card">
+                <p>"Erasmus+ changed my life! I met amazing people and gained international experience."</p>
+                <h5>- Anna, Italy</h5>
+            </div>
+            <div class="testimonial-card">
+                <p>"The Erasmus+ Hub helped me find the perfect project. Highly recommend it!"</p>
+                <h5>- Lucas, Netherlands</h5>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Call to Action (Modern, Elegant) -->
+<section class="cta-section fade-in">
+    <div class="container text-center">
+        <h2>Start Your Erasmus+ Journey Today</h2>
+        <p>Sign up and explore the best opportunities tailored for you.</p>
+        <a href="{% url 'auth' %}" class="btn btn-primary btn-lg">Get Started</a>
+    </div>
+</section>
+
+<script> document.addEventListener("DOMContentLoaded", function () {
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+    const dots = document.querySelectorAll(".dot");
+
+    function showSlides() {
+        slides.forEach((slide, i) => {
+            slide.style.opacity = "0";
+            slide.classList.remove("active");
+            dots[i].classList.remove("active");
+        });
+
+        slideIndex++;
+        if (slideIndex > slides.length) {
+            slideIndex = 1;
+        }
+
+        slides[slideIndex - 1].style.opacity = "1";
+        slides[slideIndex - 1].classList.add("active");
+        dots[slideIndex - 1].classList.add("active");
+
+        setTimeout(showSlides, 5000); // Change image every 5 seconds
+    }
+
+    function currentSlide(n) {
+        slideIndex = n - 1;
+        showSlides();
+    }
+
+    showSlides();
+});
+</script>
 {% endblock %}
