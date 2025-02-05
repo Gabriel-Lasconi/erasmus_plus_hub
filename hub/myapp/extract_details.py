@@ -1,7 +1,6 @@
 import spacy
 import requests
 
-# Load spaCy's English model
 nlp = spacy.load("en_core_web_lg")
 
 # List of European countries

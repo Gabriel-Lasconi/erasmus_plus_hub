@@ -27,6 +27,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["erasmus-plus-hub.onrender.com", "127.0.0.1", "localhost"]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://erasmus-plus-hub.onrender.com",
+]
+
+
 LOGIN_REDIRECT_URL = '/'  # Redirect to homepage after login
 LOGOUT_REDIRECT_URL = '/'  # Redirect to homepage after logout
 
@@ -43,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'myapp',
     'hub',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +59,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://erasmus-plus-hub.onrender.com",
 ]
 
 ROOT_URLCONF = 'hub.urls'
