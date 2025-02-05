@@ -22,7 +22,8 @@ PORT = os.getenv("PORT", "10000")  # Default to 10000 if PORT is not set
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ej*m)gx$mljs*ss5*(75+lzmclt#q5rtjh91n#wsdhpd75cy#c'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'your-default-secret-key')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

@@ -2,12 +2,14 @@
 {% extends "hub/base.html" %}
 
 {% block content %}
-  <h2>Suggest a Project</h2>
-  <p>Fill out this form to suggest a project. The admin will review and approve it.</p>
+  <div class="container">
+      <h2 class="mb-4">Suggest a Project</h2>
+      <p>Fill out this form to suggest a project. The admin will review and approve it.</p>
 
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-  </form>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+  </div>
 {% endblock %}

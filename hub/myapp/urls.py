@@ -13,4 +13,5 @@ urlpatterns = [
     path('filter-projects/', views.filter_projects, name='filter_projects_api'),  # AJAX endpoint
     path("filter-projects/", views.project_list, name="project_list"),
     path('logout/', views.logout_view, name='logout'),
+    path('suggest-project/', views.suggest_project, name='suggest_project'),
     ]

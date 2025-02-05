@@ -9,26 +9,24 @@ class Project(models.Model):
         ('Transnational Meeting', 'Transnational Meeting'),
     ]
 
-    name = models.CharField(max_length=255)  # Project name
-    description = models.TextField(blank=True, null=True)  # Project description
-    eligibility = models.TextField(blank=True, null=True)  # Eligibility requirements
-    country = models.CharField(max_length=100, blank=True, null=True)  # Country of the project
-    city = models.CharField(max_length=100, blank=True, null=True)  # City of the project
-    type = models.CharField(max_length=50, choices=PROJECT_TYPES)  # Dropdown for project types
-    deadline = models.DateField(blank=True, null=True)  # Deadline of the project
-    infopack_link = models.URLField(blank=True, null=True)  # Link to the infopack
-    application_link = models.URLField(blank=True, null=True)  # Link to the application form
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    eligibility = models.TextField(blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    city = models.CharField(max_length=100, blank=True, null=True)
+    type = models.CharField(max_length=50, choices=PROJECT_TYPES)
+    deadline = models.DateField(blank=True, null=True)
+    infopack_link = models.URLField(blank=True, null=True)
+    application_link = models.URLField(blank=True, null=True)
 
-class SuggestedProject(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    project_type = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
-    deadline = models.DateField()
-    submitted_by = models.CharField(max_length=255)
-    approved = models.BooleanField(default=False)  # Admin approval system
-    created_at = models.DateTimeField(auto_now_add=True)  # ✅ Add this field
-
+    approved = models.BooleanField(default=False)  # ✅ Ensure this exists
+    submitted_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name

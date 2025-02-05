@@ -17,7 +17,7 @@
             <div class="col-md-4">
                 <label for="filter-type" class="form-label">Project Type</label>
                 <select id="filter-type" name="type" class="form-select">
-                    <option value="">All Types</option>
+                    <option value="All">All Types</option>
                     <option value="Youth Exchange">Youth Exchange</option>
                     <option value="Training Course">Training Course</option>
                 </select>
@@ -77,6 +77,7 @@
         <h2 class="mb-4">Approved Projects</h2>
         <div id="projects-container" class="row">
             {% for project in projects %}
+                {% if project.approved %}  <!-- Ensure only approved projects are displayed -->
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm">
                         <div class="card-body">
@@ -88,6 +89,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
             {% empty %}
                 <p class="text-muted">No approved projects yet.</p>
             {% endfor %}
@@ -100,39 +102,42 @@
     const filterForm = document.getElementById('filter-form');
     const projectsContainer = document.getElementById('projects-container');
 
-    // Trigger AJAX request when any filter changes
     filterForm.addEventListener('change', () => {
-        const formData = new FormData(filterForm);
-        const params = new URLSearchParams(formData).toString();
+    const formData = new FormData(filterForm);
+    const params = new URLSearchParams(formData).toString();
 
-        fetch(`/filter-projects/?${params}`)
-            .then(response => response.json())
-            .then(data => {
-                // Clear existing projects
-                projectsContainer.innerHTML = '';
+    fetch(`/filter-projects/?${params}`)
+        .then(response => response.json())
+        .then(data => {
+            projectsContainer.innerHTML = '';
 
-                if (data.length === 0) {
-                    projectsContainer.innerHTML = '<p class="text-muted">No projects found.</p>';
-                } else {
-                    // Render filtered projects
-                    data.forEach(project => {
-                        projectsContainer.innerHTML += `
-                            <div class="col-md-4 mb-4">
-                                <div class="card shadow-sm">
-                                    <div class="card-body">
-                                        <h5 class="card-title">${project.title}</h5>
-                                        <p class="card-text"><strong>Country:</strong> ${project.country}</p>
-                                        <p class="card-text"><strong>Deadline:</strong> ${project.deadline}</p>
-                                        <p class="card-text"><strong>Submitted by:</strong> ${project.submitted_by}</p>
-                                        <a href="/projects/${project.id}/" class="btn btn-primary">Learn More</a>
-                                    </div>
+            let foundProjects = false; // Track if any project is displayed
+
+            data.forEach(project => {
+                if (project.approved) {  // Ensure only approved projects are shown
+                    projectsContainer.innerHTML += `
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title">${project.name}</h5>
+                                    <p class="card-text"><strong>Country:</strong> ${project.country}</p>
+                                    <p class="card-text"><strong>Deadline:</strong> ${project.deadline}</p>
+                                    <p class="card-text"><strong>Submitted by:</strong> ${project.submitted_by}</p>
+                                    <a href="/projects/${project.id}/" class="btn btn-primary">Learn More</a>
                                 </div>
                             </div>
-                        `;
-                    });
+                        </div>
+                    `;
+                    foundProjects = true;
                 }
             });
-    });
+
+            // If no projects are found, show message
+            if (!foundProjects) {
+                projectsContainer.innerHTML = '<p class="text-muted">No approved projects found.</p>';
+            }
+        });
+});
 </script>
 
 {% endblock %}
