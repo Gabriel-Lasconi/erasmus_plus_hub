@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ej*m)gx$mljs*ss5*(75+lzmclt#q5rtjh91n#wsdhpd75cy#c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["erasmus-plus-hub.onrender.com", "127.0.0.1", "localhost"]
 
 LOGIN_REDIRECT_URL = '/'  # Redirect to homepage after login
 LOGOUT_REDIRECT_URL = '/'  # Redirect to homepage after logout
