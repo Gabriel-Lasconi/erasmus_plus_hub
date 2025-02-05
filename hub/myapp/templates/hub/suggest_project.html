@@ -1,15 +1,73 @@
-<!-- templates/suggest_project.html -->
 {% extends "hub/base.html" %}
 
 {% block content %}
-  <div class="container">
-      <h2 class="mb-4">Suggest a Project</h2>
-      <p>Fill out this form to suggest a project. The admin will review and approve it.</p>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm p-4">
+                <h2 class="mb-4 text-center fw-bold">Suggest a Project</h2>
+                <p class="text-center text-muted">Fill out this form to suggest a project. The admin will review and approve it.</p>
 
-      <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-  </div>
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+
+                    <!-- Django Form Fields -->
+                    <div class="mb-3">
+                        <label for="id_name" class="form-label fw-semibold">Project Name</label>
+                        {{ form.name }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_description" class="form-label fw-semibold">Description</label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_eligibility" class="form-label fw-semibold">Eligibility</label>
+                        {{ form.eligibility }}
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="id_country" class="form-label fw-semibold">Country</label>
+                            {{ form.country }}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="id_city" class="form-label fw-semibold">City</label>
+                            {{ form.city }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="id_type" class="form-label fw-semibold">Project Type</label>
+                            {{ form.type }}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="id_deadline" class="form-label fw-semibold">Deadline</label>
+                            {{ form.deadline }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_infopack_link" class="form-label fw-semibold">Infopack Link</label>
+                        {{ form.infopack_link }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_application_link" class="form-label fw-semibold">Application Link</label>
+                        {{ form.application_link }}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Submit Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

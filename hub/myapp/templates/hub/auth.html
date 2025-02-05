@@ -1,0 +1,114 @@
+{% extends "hub/base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg p-4 auth-card">
+                <div class="row">
+                    <!-- Left Column (Info Text) -->
+                    <div class="col-md-6 d-flex align-items-center justify-content-center">
+                        <div id="info-box">
+                            <h3 class="fw-bold">Join the Erasmus+ Hub</h3>
+                            <p class="text-muted">Discover new opportunities, collaborate with international teams, and explore Erasmus+ projects. Sign up today!</p>
+                        </div>
+                    </div>
+
+                    <!-- Right Column (Login/Register Form) -->
+                    <div class="col-md-6 d-flex flex-column justify-content-center">
+                        <h2 id="form-title" class="fw-bold text-center">Login</h2>
+                        <p id="form-subtitle" class="text-muted text-center">Welcome back! Please enter your details.</p>
+
+                        <!-- Toggle Buttons -->
+                        <div class="d-flex justify-content-center mb-4">
+                            <button id="login-btn" class="btn btn-toggle active">Login</button>
+                            <button id="register-btn" class="btn btn-toggle">Register</button>
+                        </div>
+
+                        <!-- Login Form -->
+                        <form method="post" id="login-form" class="auth-form">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_username" class="form-label fw-semibold">Username</label>
+                                <input type="text" name="username" id="id_username" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_password" class="form-label fw-semibold">Password</label>
+                                <input type="password" name="password" id="id_password" class="form-control" required>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary w-100">Login</button>
+                            </div>
+                        </form>
+
+                        <!-- Register Form (Initially Hidden) -->
+                        <form method="post" id="register-form" class="auth-form d-none">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="id_register_username" class="form-label fw-semibold">Username</label>
+                                <input type="text" name="username" id="id_register_username" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_register_email" class="form-label fw-semibold">Email</label>
+                                <input type="email" name="email" id="id_register_email" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_register_password1" class="form-label fw-semibold">Password</label>
+                                <input type="password" name="password1" id="id_register_password1" class="form-control" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="id_register_password2" class="form-label fw-semibold">Confirm Password</label>
+                                <input type="password" name="password2" id="id_register_password2" class="form-control" required>
+                            </div>
+
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary w-100">Create Account</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Tab Switching -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const loginBtn = document.getElementById("login-btn");
+        const registerBtn = document.getElementById("register-btn");
+        const loginForm = document.getElementById("login-form");
+        const registerForm = document.getElementById("register-form");
+        const title = document.getElementById("form-title");
+        const subtitle = document.getElementById("form-subtitle");
+        const infoBox = document.getElementById("info-box");
+
+        loginBtn.addEventListener("click", () => {
+            loginForm.classList.remove("d-none");
+            registerForm.classList.add("d-none");
+            loginBtn.classList.add("active");
+            registerBtn.classList.remove("active");
+
+            title.textContent = "Login";
+            subtitle.textContent = "Welcome back! Please enter your details.";
+            infoBox.innerHTML = `<h3 class="fw-bold">Join the Erasmus+ Hub</h3><p class="text-muted">Discover new opportunities, collaborate with international teams, and explore Erasmus+ projects. Sign up today!</p>`;
+        });
+
+        registerBtn.addEventListener("click", () => {
+            registerForm.classList.remove("d-none");
+            loginForm.classList.add("d-none");
+            registerBtn.classList.add("active");
+            loginBtn.classList.remove("active");
+
+            title.textContent = "Register";
+            subtitle.textContent = "Create an account to get started.";
+            infoBox.innerHTML = `<h3 class="fw-bold">Already Have an Account?</h3><p class="text-muted">Log in to access exclusive Erasmus+ projects and collaborate with others.</p>`;
+        });
+    });
+</script>
+{% endblock %}

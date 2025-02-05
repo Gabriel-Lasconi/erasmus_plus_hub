@@ -1,43 +1,40 @@
-/* Global Styles */
+/* General */
 body {
-    font-family: 'Inter', sans-serif;
-    background-color: #FAFAFA;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
     color: #333;
-    margin: 0;
-    padding: 0;
 }
 
 /* Navbar */
 .navbar {
-    background: linear-gradient(135deg, #1A237E, #00A86B);
-    padding: 15px 0;
-    border-radius: 0 0 15px 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 15px 20px;
 }
 
-.navbar a {
-    color: white;
-    font-weight: 600;
-    text-transform: uppercase;
-    padding: 10px 15px;
-    transition: all 0.3s ease-in-out;
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
 }
 
-.navbar a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
+/* Navbar Links */
+.navbar-nav .nav-link {
+    margin-right: 20px;
+    transition: color 0.3s ease-in-out;
 }
 
+.navbar-nav .nav-link:hover {
+    color: #ff7e5f;
+}
 /* Hero Section */
 .hero-section {
-    min-height: 75vh;
+    position: relative;
+    height: 50vh;
+    background: url('../images/hero.jpg') center/cover no-repeat;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     color: white;
-    position: relative;
-    background: url('{% static "images/hero.jpg" %}') center center / cover no-repeat;
+    padding: 60px 0;
 }
 
 .hero-section::before {
@@ -48,113 +45,130 @@ body {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
 }
 
 .hero-section .container {
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
 .hero-section h1 {
     font-size: 3rem;
     font-weight: bold;
-    margin-bottom: 1rem;
-    text-shadow: 1px 1px 10px rgba(0, 0, 0, 0.8);
 }
 
 .hero-section p {
-    font-size: 1.25rem;
-    margin-bottom: 2rem;
-    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.8);
+    font-size: 1.2rem;
 }
 
-/* Buttons */
-.btn-primary {
-    background-color: #FF6F00;
-    color: white;
-    font-weight: bold;
-    padding: 12px 20px;
-    border-radius: 8px;
-    transition: 0.3s ease-in-out;
+.hero-section .btn-primary {
+    background: #008080;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1.2rem;
 }
 
-.btn-primary:hover {
-    background-color: #E65100;
-    transform: scale(1.05);
+.hero-section .btn-primary:hover {
+    background: #0056b3;
 }
 
 /* Cards */
 .card {
-    background: white;
-    border-radius: 15px;
-    padding: 20px;
-    margin: 10px 0;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    transition: 0.3s ease-in-out;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-.card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
+/* Buttons */
+.btn {
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
 }
 
-.card-body {
-    text-align: center;
+.btn-primary {
+    background: linear-gradient(135deg, #0056b3, #008080);
 }
 
-/* Forms */
-form {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-input, select, textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-/* Filter Section */
-.bg-light {
-    background-color: #f9f9f9 !important;
-}
-
-.text-center h4 {
-    font-weight: bold;
-    color: #FF6F00;
-}
-
-.text-center p {
-    color: #666;
+.btn-primary:hover {
+    background: linear-gradient(135deg, #008080, #0056b3);
 }
 
 /* Footer */
-.footer {
-    background: #0D1B2A;
-    color: white;
-    text-align: center;
-    padding: 15px 0;
-    margin-top: 40px;
-    font-size: 0.9rem;
+footer {
+    margin-top: 50px;
+    padding: 15px;
+}
+/* Filter Section */
+.filter-section {
+    background-color: #f8f9fa;
+    padding: 20px 0;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero-section h1 {
-        font-size: 2.5rem;
-    }
+.filter-section .form-label {
+    font-size: 1rem;
+    font-weight: bold;
+}
 
-    .hero-section p {
-        font-size: 1.1rem;
-    }
+/* Project Cards */
+.project-card {
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+/* Suggest Project Form */
+.card {
+    border-radius: 12px;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styling */
+form .form-label {
+    font-weight: 600;
+    color: #333;
+}
+
+form input,
+form textarea,
+form select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    border-color: #008080;
+    box-shadow: 0 0 5px rgba(0, 128, 128, 0.3);
+    outline: none;
+}
+
+/* Button Styling */
+.btn-primary {
+    background: linear-gradient(135deg, #0056b3, #008080);
+    border: none;
+    padding: 12px 18px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #008080, #0056b3);
+    transform: scale(1.05);
 }

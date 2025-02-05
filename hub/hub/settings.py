@@ -38,7 +38,7 @@ CSRF_TRUSTED_ORIGINS = [
 LOGIN_REDIRECT_URL = '/'  # Redirect to homepage after login
 LOGOUT_REDIRECT_URL = '/'  # Redirect to homepage after logout
 
-LOGIN_URL = '/login/'  # URL to redirect users to for login
+LOGIN_URL = '/auth/'  # URL to redirect users to for login
 
 # Application definition
 

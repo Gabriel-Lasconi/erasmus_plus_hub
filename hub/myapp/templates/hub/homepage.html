@@ -3,61 +3,19 @@
 
 {% block content %}
 <!-- Hero Section -->
-    <section class="hero-section" style="background: url('{% static 'images/hero.jpg' %}') center center / cover no-repeat;">
-        <div class="container">
-            <h1>Welcome to Dutch Erasmus+ Hub</h1>
-            <p>Your gateway to Erasmus+ opportunities tailored for participants in the Netherlands.</p>
-            <a href="{% url 'filter_projects' %}" class="btn btn-light btn-lg mt-3">Explore Projects</a>
-        </div>
-    </section>
+<section class="hero-section">
+    <div class="container">
+        <h1>Connect & Grow</h1>
+        <p>Explore Erasmus+ opportunities</p>
+        <a href="{% url 'filter_projects' %}" class="btn btn-primary">View Projects</a>
+    </div>
+</section>
 
 <!-- About Section -->
 <section class="py-5">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-md-6">
-                <img src="{% static 'images/about.jpg' %}" alt="Collaboration" class="img-fluid rounded shadow">
-            </div>
-            <div class="col-md-6">
-                <h2 class="text-orange">What is Erasmus+?</h2>
-                <p>
-                    Erasmus+ is the EU's programme to support education, training, youth, and sport in Europe. Explore projects, collaborate with peers, and discover new opportunities!
-                </p>
-                <a href="{% url 'filter_projects' %}" class="btn btn-orange btn-lg mt-3">Browse Projects</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Featured Benefits -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center text-orange mb-5">Why Choose Dutch Erasmus+ Hub?</h2>
-        <div class="row">
-            <div class="col-md-4 text-center">
-                <img src="{% static 'images/networking.png' %}" alt="Networking" class="img-fluid mb-3" style="height: 100px;">
-                <h4>Networking</h4>
-                <p>Connect with like-minded individuals and organizations across Europe.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <img src="{% static 'images/growth.png' %}" alt="Personal Growth" class="img-fluid mb-3" style="height: 100px;">
-                <h4>Personal Growth</h4>
-                <p>Participate in projects that inspire and grow your skills.</p>
-            </div>
-            <div class="col-md-4 text-center">
-                <img src="{% static 'images/collaboration.png' %}" alt="Collaboration" class="img-fluid mb-3" style="height: 100px;">
-                <h4>Collaboration</h4>
-                <p>Work with diverse groups and foster cultural exchange.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Call-to-Action -->
-<section class="py-5 text-center" style="background: linear-gradient(to right, #feb47b, #ff7e5f);">
-    <div class="container">
-        <h3 class="text-white">Join the Dutch Erasmus+ Hub Community Today!</h3>
-        <a href="{% url 'register' %}" class="btn btn-light btn-lg mt-3">Sign Up Now</a>
+    <div class="container text-center">
+        <h2 class="text-orange">What is Erasmus+?</h2>
+        <p>Erasmus+ is the EU's program for education, training, and collaboration.</p>
     </div>
 </section>
 {% endblock %}

@@ -1,14 +1,10 @@
 # myapp/views.py
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Project
 from .forms import CreateProjectForm
 from django.http import HttpResponseForbidden
 from .forms import RegisterForm
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
 from django.contrib.auth import logout
-
-
 def homepage_view(request):
     return render(request, 'hub/homepage.html')
 
@@ -35,10 +31,10 @@ def register(request):
         form = RegisterForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Redirect to login page after successful registration
+            return redirect('auth')  # Redirect to login page after successful registration
     else:
         form = RegisterForm()
-    return render(request, 'hub/register.html', {'form': form})
+    return render(request, 'hub/auth.html', {'form': form})
 
 
 from django.http import JsonResponse
@@ -74,8 +70,8 @@ def suggest_project(request):
         form = CreateProjectForm(request.POST)
         if form.is_valid():
             project = form.save(commit=False)
-            project.submitted_by = request.user  # ✅ Assign user properly
-            project.approved = request.user.is_staff  # ✅ Auto-approve if admin
+            project.submitted_by = request.user
+            project.approved = request.user.is_staff
             project.save()
             return redirect("/")
     else:
@@ -86,27 +82,7 @@ def suggest_project(request):
 def logout_view(request):
     logout(request)
     return redirect('/')  # Redirect to home page after logout
-# def project_list(request):
-#     projects = CreateProjectForm.objects.filter(approved=True)
-#
-#     project_type = request.GET.get("type")
-#     country = request.GET.get("country")
-#     deadline = request.GET.get("deadline")
-#
-#     if project_type:
-#         projects = projects.filter(project_type=project_type)
-#     if country:
-#         projects = projects.filter(country=country)
-#     if deadline:
-#         projects = projects.filter(deadline__lte=deadline)
-#
-#     # AJAX response
-#     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-#         data = list(projects.values("id", "title", "country", "deadline", "submitted_by"))
-#         return JsonResponse(data, safe=False)
-#
-#     return render(request, "hub/filter_projects.html", {"projects": projects})
 
 def project_list(request):
-    projects = Project.objects.filter(approved=True)  # ✅ Only show approved projects
+    projects = Project.objects.filter(approved=True)
     return render(request, "hub/filter_projects.html", {"projects": projects})
