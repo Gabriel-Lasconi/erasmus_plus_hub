@@ -83,6 +83,12 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from .models import SuggestedProject
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')  # Redirect to home page after logout
 def project_list(request):
     projects = SuggestedProject.objects.filter(approved=True)
 
