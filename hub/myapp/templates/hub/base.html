@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dutch Erasmus+ Hub</title>
+    <title>Erasmus+ Hub</title>
     {% load static %} <!-- This line loads the static template tag -->
 
     <!-- Bootstrap & Icons -->
@@ -12,6 +12,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/auth.css' %}">
 </head>
 <body>
@@ -21,7 +22,7 @@
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand fw-bold text-dark fs-4" href="{% url 'homepage' %}">
-                DUTCH ERASMUS+ HUB
+                ERASMUS+ HUB
             </a>
 
             <!-- Mobile Toggle -->
@@ -36,20 +37,21 @@
                     <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'suggest_project' %}">Suggest Project</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold" href="#">About</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold" href="#">Contact</a></li>
-
                     {% if user.is_authenticated %}
-
                         <li class="nav-item">
                             <form action="{% url 'logout' %}" method="post">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-outline-primary ms-3">
+                                <button type="submit" class="btn logout-btn">
                                     <i class="bi bi-person-circle me-2"></i> Logout
                                 </button>
                             </form>
                         </li>
                     {% else %}
-                        <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'auth' %}">Authenticate</a></li>
-{#                        <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'register' %}">Register</a></li>#}
+                        <li class="nav-item">
+                            <a href="{% url 'auth' %}" class="btn authenticate-btn">
+                                <i class="bi bi-key me-2"></i> Authenticate
+                            </a>
+                        </li>
                     {% endif %}
                 </ul>
             </div>

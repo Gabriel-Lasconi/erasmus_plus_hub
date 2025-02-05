@@ -1,16 +1,35 @@
 {% extends 'hub/base.html' %}
 
+{% load static %} <!-- Load static files -->
+
 {% block content %}
-<div class="card">
-    <div class="card-body">
-        <h2 class="card-title">{{ project.name }}</h2>
-        <p class="card-text"><strong>Description:</strong> {{ project.description }}</p>
-        <p class="card-text"><strong>Country:</strong> {{ project.country }}</p>
-        <p class="card-text"><strong>Deadline:</strong> {{ project.deadline }}</p>
-        <p>
-            <a href="{{ project.infopack_link }}" class="btn btn-primary" target="_blank">Infopack</a>
-            <a href="{{ project.application_link }}" class="btn btn-primary" target="_blank">Apply Now</a>
-        </p>
+<!-- Link to separate CSS file -->
+<link rel="stylesheet" href="{% static 'css/project_detail.css' %}">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card project-card shadow-lg p-4">
+                <div class="card-body">
+                    <h1 class="card-title fw-bold text-center">{{ project.name }}</h1>
+                    <hr class="my-4">
+
+                    <p class="card-text"><strong>Description:</strong> {{ project.description }}</p>
+                    <p class="card-text"><strong>Country:</strong> {{ project.country }}</p>
+                    <p class="card-text"><strong>Deadline:</strong> {{ project.deadline }}</p>
+
+                    <!-- Buttons -->
+                    <div class="d-flex justify-content-center mt-4">
+                        <a href="{{ project.infopack_link }}" class="btn btn-outline-primary btn-lg me-3 animate-hover" target="_blank">
+                            Infopack
+                        </a>
+                        <a href="{{ project.application_link }}" class="btn btn-primary btn-lg animate-hover" target="_blank">
+                            Apply Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
