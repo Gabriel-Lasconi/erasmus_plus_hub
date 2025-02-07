@@ -15,9 +15,9 @@ urlpatterns = [
 
     # Projects
     path('projects/<int:pk>/', views.project_detail, name='project_detail'),
-    path('projects/filter/', views.filter_projects_view, name='filter_projects'),  # Filter projects view
-    path('api/filter-projects/', views.filter_projects, name='filter_projects_api'),  # AJAX API
-    path('projects/list/', views.project_list, name='project_list'),  # List all projects
+    path('projects/filter/', views.filter_projects_view, name='filter_projects'),
+    path('api/filter-projects/', views.filter_projects, name='filter_projects_api'),
+    path('projects/', views.project_list, name='project_list'),
 
     # Project Suggestion
     path('suggest-project/', views.suggest_project, name='suggest_project'),

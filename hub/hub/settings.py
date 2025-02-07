@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'hub',
     'corsheaders',
     "django_cleanup",
+    "django_countries",
+    "phonenumber_field",
 ]
 
 MIDDLEWARE = [

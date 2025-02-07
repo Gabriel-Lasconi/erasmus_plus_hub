@@ -10,11 +10,17 @@
                 <p class="text-muted">@{{ user.username }}</p>
                 <p class="bio-text">Gender: {{ user.profile.gender }}</p>
                 <p class="bio-text">{{ user.profile.bio|default:"No bio available" }}</p>
-                <!-- Upload Profile Picture -->
-                <form method="post" enctype="multipart/form-data" class="mt-3">
+
+                <!-- Profile Picture Form -->
+                <form method="post" enctype="multipart/form-data" id="profile-pic-form">
                     {% csrf_token %}
-                    {{ profile_form.profile_image }}
-                    <button type="submit" class="btn btn-primary btn-sm mt-2">Change Picture</button>
+                    <input type="file" name="profile_image" id="profile-pic-input" class="d-none" onchange="this.form.submit()">
+                    <label for="profile-pic-input" class="btn btn-outline-primary edit-profile-btn mt-3">
+                        Choose File
+                    </label>
+                    <button type="submit" name="remove_picture" class="btn btn-outline-primary edit-profile-btn mt-3">
+                        Remove Picture
+                    </button>
                 </form>
 
                 <!-- Edit Profile Button -->
@@ -34,7 +40,10 @@
                         <p><i class="bi bi-telephone"></i> <strong>Phone:</strong> {{ user.profile.phone|default:"Not set" }}</p>
                     </div>
                     <div class="col-md-6">
-                        <p><i class="bi bi-geo-alt"></i> <strong>Location:</strong> {{ user.profile.city|default:"Not set" }}, {{ user.profile.country|default:"Not set" }}</p>
+                        <p><i class="bi bi-geo-alt"></i> <strong>Location:</strong>
+                            {{ user.profile.city|default:"Not set" }},
+                            {{ user.profile.country|default:"Not set" }}
+                        </p>
                         <p><i class="bi bi-calendar"></i> <strong>Joined:</strong> {{ user.date_joined|date:"F Y" }}</p>
                     </div>
                 </div>
@@ -81,50 +90,109 @@
 
     <!-- Edit Profile Modal -->
     <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square"></i> Edit Profile</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold">
+              <i class="bi bi-pencil-square"></i> Edit Profile
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <form method="post" data-parsley-validate>
+              {% csrf_token %}
+              <div class="row">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                  <label class="form-label">First Name</label>
+                  {{ user_form.first_name }}
+
+                  <label class="form-label mt-2">Last Name</label>
+                  {{ user_form.last_name }}
+
+                  <label class="form-label mt-2">Email</label>
+                  {{ user_form.email }}
+
+                  <label class="form-label mt-2">Phone</label>
+                  {{ profile_form.phone }}
+                  <small class="text-muted">
+                    {{ profile_form.phone.help_text }}
+                  </small>
                 </div>
-                <div class="modal-body">
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col-md-6">
-                                <label class="form-label">First Name</label>
-                                {{ user_form.first_name }}
 
-                                <label class="form-label mt-2">Last Name</label>
-                                {{ user_form.last_name }}
+                <!-- Right Column -->
+                <div class="col-md-6">
+                  <label class="form-label">Gender</label>
+                  {{ profile_form.gender }}
 
-                                <label class="form-label mt-2">Email</label>
-                                {{ user_form.email }}
+                  <label class="form-label mt-2">City</label>
+                  {{ profile_form.city }}
 
-                                <label class="form-label mt-2">Phone</label>
-                                {{ profile_form.phone }}
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Gender</label>
-                                {{ profile_form.gender }}
+                  <label class="form-label mt-2">Country</label>
+                  {{ profile_form.country }}
 
-                                <label class="form-label mt-2">City</label>
-                                {{ profile_form.city }}
+                  <label class="form-label mt-2">Dietary Preferences</label>
+                  {{ profile_form.dietary_needs }}
 
-                                <label class="form-label mt-2">Country</label>
-                                {{ profile_form.country }}
+                  <!-- NEW: Date of Birth -->
+                  <label class="form-label mt-2">Date of Birth</label>
+                  {{ profile_form.date_of_birth }}
 
-                                <label class="form-label mt-2">Bio</label>
-                                {{ profile_form.bio }}
-                            </div>
-                        </div>
-                        <div class="text-center mt-3">
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
-                        </div>
-                    </form>
+                  <label class="form-label mt-2">Bio</label>
+                  {{ profile_form.bio }}
                 </div>
-            </div>
+              </div>
+
+              <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const profilePicInput = document.querySelector("#id_profile_image");
+        const removePicBtn = document.getElementById("remove-picture-btn");
+
+        if (profilePicInput) {
+            profilePicInput.addEventListener("change", function () {
+                this.blur();
+            });
+        }
+
+        if (removePicBtn) {
+            removePicBtn.addEventListener("click", function () {
+                fetch("{% url 'profile' %}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: new URLSearchParams({ "remove_picture": "true" })
+                }).then(response => {
+                    if (response.ok) window.location.reload();
+                });
+            });
+        }
+    });
+</script>
+<!-- Include Parsley.js from a CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
+<script>
+    // Optionally, you can customize Parsley further or add additional client-side logic.
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initialize Parsley
+        var forms = document.querySelectorAll('form[data-parsley-validate]');
+        forms.forEach(function(form) {
+            window.Parsley.addValidator('custom', {});  // Example if you need custom validators
+            Parsley.on('field:validate', function() {
+                // Additional logic if needed
+            });
+        });
+    });
+</script>
 {% endblock %}

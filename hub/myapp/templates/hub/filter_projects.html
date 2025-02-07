@@ -99,42 +99,66 @@
 
 <!-- AJAX Script for Filtering -->
 <script>
-    const filterForm = document.getElementById('filter-form');
-    const projectsContainer = document.getElementById('projects-container');
+ document.addEventListener("DOMContentLoaded", function () {
+    const filterForm = document.getElementById("filter-form");
+    const projectsContainer = document.getElementById("projects-container");
 
-    filterForm.addEventListener('change', () => {
+    if (!filterForm) {
+        console.error("❌ Error: `filter-form` not found in the document!");
+        return;
+    }
+
+    function fetchProjects() {
         const formData = new FormData(filterForm);
+
+        // ✅ Ensure "All" is not sent as a filter
+        if (formData.get("type") === "All") {
+            formData.delete("type");
+        }
+
         const params = new URLSearchParams(formData).toString();
 
-        fetch(`/filter-projects/?${params}`)
+        fetch(`/api/filter-projects/?${params}`)
             .then(response => response.json())
             .then(data => {
+                console.log("✅ Received Data:", data);
+
                 projectsContainer.innerHTML = '';
-                let foundProjects = false;
 
                 data.forEach(project => {
-                    if (project.approved) {
-                        projectsContainer.innerHTML += `
-                            <div class="col-md-4 mb-4">
-                                <div class="card project-card">
-                                    <div class="card-body">
-                                        <h5 class="card-title fw-bold">${project.name}</h5>
-                                        <p class="card-text"><strong>Country:</strong> ${project.country}</p>
-                                        <p class="card-text"><strong>Deadline:</strong> ${project.deadline}</p>
-                                        <p class="card-text"><strong>Submitted by:</strong> ${project.submitted_by}</p>
-                                        <a href="/projects/${project.id}/" class="btn btn-primary w-100">Learn More</a>
-                                    </div>
+                    if (!project.name) {
+                        console.error("❌ Error: Missing `name` in project data:", project);
+                        return;
+                    }
+
+                    projectsContainer.innerHTML += `
+                        <div class="col-md-4 mb-4">
+                            <div class="card project-card">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">${project.name}</h5>
+                                    <p class="card-text"><strong>Country:</strong> ${project.country}</p>
+                                    <p class="card-text"><strong>Deadline:</strong> ${project.deadline}</p>
+                                    <p class="card-text"><strong>Submitted by:</strong> ${project.submitted_by}</p>
+                                    <a href="/projects/${project.id}/" class="btn btn-primary w-100">Learn More</a>
                                 </div>
                             </div>
-                        `;
-                        foundProjects = true;
-                    }
+                        </div>
+                    `;
                 });
 
-                if (!foundProjects) {
-                    projectsContainer.innerHTML = '<p class="text-muted text-center">No approved projects found.</p>';
+                if (data.length === 0) {
+                    projectsContainer.innerHTML = '<p class="text-muted text-center">No projects found.</p>';
                 }
-            });
-    });
+            })
+            .catch(error => console.error("❌ Fetch Error:", error));
+    }
+
+    // ✅ Fetch projects **on page load**
+    fetchProjects();
+
+    // ✅ Fetch projects when filters change
+    filterForm.addEventListener("change", fetchProjects);
+});
+
 </script>
 {% endblock %}

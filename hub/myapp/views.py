@@ -1,18 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.http import JsonResponse
 
-from .models import Profile, Certification, Badge, Project
 from .forms import (
     CreateProjectForm,
     RegisterForm,
     UserUpdateForm,
-    ProfileUpdateForm,
+    ProfileUpdateForm, ProfileImageForm,
 )
-
-
 def homepage_view(request):
     return render(request, "hub/homepage.html")
 
@@ -21,11 +16,6 @@ def project_detail(request, pk):
     """View for displaying project details."""
     project = get_object_or_404(Project, pk=pk)
     return render(request, "hub/project_detail.html", {"project": project})
-
-
-from django.contrib import messages
-
-from django.contrib import messages
 
 def register(request):
     """Handles user registration and ensures a profile is created."""
@@ -57,24 +47,34 @@ def logout_view(request):
     return redirect("/")
 
 
+from django.http import JsonResponse
+from .models import Project
+
 def filter_projects(request):
-    """Filters projects based on query parameters."""
     projects = Project.objects.filter(approved=True)
 
     type_filter = request.GET.get("type", "")
     country_filter = request.GET.get("country", "")
     deadline_filter = request.GET.get("deadline", "")
 
-    if type_filter:
+    if type_filter and type_filter != "All":
         projects = projects.filter(type=type_filter)
     if country_filter:
         projects = projects.filter(country=country_filter)
     if deadline_filter:
         projects = projects.filter(deadline__lte=deadline_filter)
 
-    project_list = list(
-        projects.values("id", "title", "country", "deadline", "submitted_by")
-    )
+    # ✅ Always return all approved projects if no filters are applied
+    project_list = [
+        {
+            "id": project.id,
+            "name": project.name,
+            "country": project.country,
+            "deadline": project.deadline.strftime("%Y-%m-%d"),
+            "submitted_by": project.submitted_by,
+        }
+        for project in projects
+    ]
 
     return JsonResponse(project_list, safe=False)
 
@@ -103,11 +103,16 @@ def suggest_project(request):
 
     return render(request, "hub/suggest_project.html", {"form": form})
 
-
 def project_list(request):
     """Displays a list of approved projects."""
     projects = Project.objects.filter(approved=True)
     return render(request, "hub/filter_projects.html", {"projects": projects})
+
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from .models import Profile, Certification, Badge
+from .forms import UserUpdateForm, ProfileUpdateForm
 
 
 @login_required
@@ -115,21 +120,36 @@ def profile(request):
     """Displays and updates the user profile."""
     user_profile, created = Profile.objects.get_or_create(user=request.user)
     certifications = Certification.objects.filter(user=request.user)
-    badges = Badge.objects.filter(users=request.user)  # ✅ Correct ManyToMany lookup
+    badges = Badge.objects.filter(users=request.user)
 
     if request.method == "POST":
-        user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(
-            request.POST, request.FILES, instance=user_profile
-        )
+        # Check if the profile image is being updated
+        if "profile_image" in request.FILES:
+            image_form = ProfileImageForm(request.POST, request.FILES, instance=user_profile)
+            if image_form.is_valid():
+                image_form.save()
+                messages.success(request, "Profile picture updated successfully!")
+                return redirect("profile")
+            else:
+                messages.error(request, "Error updating profile picture. Check the details.")
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
-            profile_form.save()
-            messages.success(request, "Profile updated successfully!")
+        elif "remove_picture" in request.POST:
+            user_profile.profile_image = "default.png"
+            user_profile.save()
+            messages.success(request, "Profile picture removed successfully!")
             return redirect("profile")
+
         else:
-            messages.error(request, "Error updating profile. Check your details.")
+            # Handle full profile update
+            user_form = UserUpdateForm(request.POST, instance=request.user)
+            profile_form = ProfileUpdateForm(request.POST, instance=user_profile)
+            if user_form.is_valid() and profile_form.is_valid():
+                user_form.save()
+                profile_form.save()
+                messages.success(request, "Profile updated successfully!")
+                return redirect("profile")
+            else:
+                messages.error(request, "Error updating profile. Check your details.")
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=user_profile)
@@ -155,3 +175,20 @@ def award_badge(user, project):
         messages.success(user, f"You have earned a new badge: {badge_name}")
     else:
         messages.info(user, f"You already have the badge: {badge_name}")
+
+def filter_projects_api(request):
+    projects = Project.objects.filter(approved=True)
+
+    type_filter = request.GET.get("type", "")
+    country_filter = request.GET.get("country", "")
+    deadline_filter = request.GET.get("deadline", "")
+
+    if type_filter and type_filter != "All":
+        projects = projects.filter(type=type_filter)
+    if country_filter:
+        projects = projects.filter(country=country_filter)
+    if deadline_filter:
+        projects = projects.filter(deadline__lte=deadline_filter)
+
+    project_list = list(projects.values("id", "name", "country", "deadline", "submitted_by", "approved"))
+    return JsonResponse(project_list, safe=False)
