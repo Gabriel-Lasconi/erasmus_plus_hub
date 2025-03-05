@@ -2,18 +2,17 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 from django_countries.widgets import CountrySelectWidget
-from phonenumber_field.formfields import PhoneNumberField
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
-from .models import Project, Profile
-
+from intl_tel_input.widgets import IntlTelInputWidget
+from .models import Project, Profile, Organization
 
 class CreateProjectForm(forms.ModelForm):
+    organization = forms.ModelChoiceField(queryset=Organization.objects.all(), required=True)
     """Form to create projects with automatic approval for staff users."""
     class Meta:
         model = Project
         fields = [
             "name", "description", "eligibility", "country", "city",
-            "type", "deadline", "infopack_link", "application_link"
+            "type", "deadline", "infopack_link", "application_link", "organization"
         ]
 
     def save(self, commit=True, user=None):
@@ -69,18 +68,16 @@ class ProfileUpdateForm(forms.ModelForm):
         ),
         required=False
     )
-
-    phone = PhoneNumberField(
-        widget=PhoneNumberPrefixWidget(
-            widgets=[
-                forms.Select(attrs={'class': 'form-control', 'placeholder': 'Choose your country code'}),
-                forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter phone number'}),
-            ]
+    phone = forms.CharField(
+        required=False,
+        widget=IntlTelInputWidget(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Your phone number",
+            },
         ),
-        label="Phone Number",
-        help_text="Pick your country code, then enter your phone number."
+        label="Phone number"
     )
-
     class Meta:
         model = Profile
         fields = [

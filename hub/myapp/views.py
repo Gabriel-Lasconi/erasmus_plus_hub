@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count  # ✅ Import Count function
+from .models import Organization
 
 from .forms import (
     CreateProjectForm,
@@ -9,8 +11,26 @@ from .forms import (
     ProfileUpdateForm, ProfileImageForm,
 )
 def homepage_view(request):
-    return render(request, "hub/homepage.html")
+    """Loads the homepage with featured organizations."""
+    organizations = Organization.objects.annotate(
+        project_count=Count("projects")
+    ).filter(project_count__gt=0)
 
+    print("🔍 Organizations Found:", organizations)  # Debugging line
+
+    return render(request, "hub/homepage.html", {"organizations": organizations})
+
+from django.db.models import Count
+from django.shortcuts import render
+from myapp.models import Organization
+
+def homepage_view(request):
+    """Loads the homepage with featured organizations."""
+    organizations = Organization.objects.annotate(project_count=Count("projects")).filter(project_count__gt=0)
+
+    print("🔍 Organizations Sent to Template:", organizations)  # Debugging
+
+    return render(request, "hub/homepage.html", {"organizations": organizations})
 
 def project_detail(request, pk):
     """View for displaying project details."""

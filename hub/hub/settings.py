@@ -59,6 +59,10 @@ INSTALLED_APPS = [
     "phonenumber_field",
 ]
 
+PHONENUMBER_DEFAULT_REGION = "RO"             # or whichever country you want as default
+PHONENUMBER_DB_FORMAT = "E164"                # how it’s stored in the database
+PHONENUMBER_DEFAULT_FORMAT = "INTERNATIONAL"  # how it’s displayed by default
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -140,7 +144,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+# CHANGED: Add a leading slash for clarity
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+# ADDED: Where collectstatic will place files in production (good practice)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

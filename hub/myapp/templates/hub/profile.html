@@ -1,30 +1,51 @@
 {% extends "hub/base.html" %}
+{% load static %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="row">
         <!-- Left Side: Profile Card -->
         <div class="col-md-4">
             <div class="card profile-card shadow-sm p-4 text-center">
+                <!-- Display Profile Image -->
                 <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="profile-img mb-3">
+
+                <!-- Display Names & Username -->
                 <h3 class="fw-bold">{{ user.first_name }} {{ user.last_name }}</h3>
                 <p class="text-muted">@{{ user.username }}</p>
+
+                <!-- Gender & Bio -->
                 <p class="bio-text">Gender: {{ user.profile.gender }}</p>
                 <p class="bio-text">{{ user.profile.bio|default:"No bio available" }}</p>
 
                 <!-- Profile Picture Form -->
                 <form method="post" enctype="multipart/form-data" id="profile-pic-form">
                     {% csrf_token %}
-                    <input type="file" name="profile_image" id="profile-pic-input" class="d-none" onchange="this.form.submit()">
+                    <input
+                        type="file"
+                        name="profile_image"
+                        id="profile-pic-input"
+                        class="d-none"
+                        onchange="this.form.submit()"
+                    >
                     <label for="profile-pic-input" class="btn btn-outline-primary edit-profile-btn mt-3">
                         Choose File
                     </label>
-                    <button type="submit" name="remove_picture" class="btn btn-outline-primary edit-profile-btn mt-3">
+                    <button
+                        type="submit"
+                        name="remove_picture"
+                        class="btn btn-outline-primary edit-profile-btn mt-3"
+                    >
                         Remove Picture
                     </button>
                 </form>
 
                 <!-- Edit Profile Button -->
-                <button class="btn btn-outline-primary edit-profile-btn mt-3" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                <button
+                    class="btn btn-outline-primary edit-profile-btn mt-3"
+                    data-bs-toggle="modal"
+                    data-bs-target="#editProfileModal"
+                >
                     <i class="bi bi-pencil"></i> Edit Profile
                 </button>
             </div>
@@ -33,22 +54,40 @@
         <!-- Right Side: User Information -->
         <div class="col-md-8">
             <div class="card user-info-card shadow-sm p-4">
-                <h4 class="fw-bold"><i class="bi bi-person-circle"></i> Personal Information</h4>
+                <h4 class="fw-bold">
+                    <i class="bi bi-person-circle"></i> Personal Information
+                </h4>
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <p><i class="bi bi-envelope"></i> <strong>Email:</strong> {{ user.email }}</p>
-                        <p><i class="bi bi-telephone"></i> <strong>Phone:</strong> {{ user.profile.phone|default:"Not set" }}</p>
+                        <!-- Email & Phone -->
+                        <p>
+                            <i class="bi bi-envelope"></i>
+                            <strong>Email:</strong> {{ user.email }}
+                        </p>
+                        <p>
+                            <i class="bi bi-telephone"></i>
+                            <strong>Phone:</strong>
+                            {{ user.profile.phone|default:"Not set" }}
+                        </p>
                     </div>
                     <div class="col-md-6">
-                        <p><i class="bi bi-geo-alt"></i> <strong>Location:</strong>
+                        <!-- City, Country, Join Date -->
+                        <p>
+                            <i class="bi bi-geo-alt"></i>
+                            <strong>Location:</strong>
                             {{ user.profile.city|default:"Not set" }},
                             {{ user.profile.country|default:"Not set" }}
                         </p>
-                        <p><i class="bi bi-calendar"></i> <strong>Joined:</strong> {{ user.date_joined|date:"F Y" }}</p>
+                        <p>
+                            <i class="bi bi-calendar"></i>
+                            <strong>Joined:</strong>
+                            {{ user.date_joined|date:"F Y" }}
+                        </p>
                     </div>
                 </div>
             </div>
 
+            <!-- Certifications & Badges -->
             <div class="row mt-4">
                 <!-- Certifications Section -->
                 <div class="col-md-6">
@@ -58,7 +97,8 @@
                             <ul class="list-group">
                                 {% for cert in certifications %}
                                     <li class="list-group-item">
-                                        <strong>{{ cert.title }}</strong> - Issued on {{ cert.issued_date }}
+                                        <strong>{{ cert.title }}</strong>
+                                        - Issued on {{ cert.issued_date }}
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -75,7 +115,11 @@
                         <div class="d-flex flex-wrap">
                             {% for badge in badges %}
                                 <div class="badge-card text-center m-2">
-                                    <img src="{{ badge.image.url }}" class="img-fluid" width="80">
+                                    <img
+                                        src="{{ badge.image.url }}"
+                                        class="img-fluid"
+                                        width="80"
+                                    >
                                     <p class="badge-name">{{ badge.name }}</p>
                                 </div>
                             {% empty %}
@@ -89,14 +133,25 @@
     </div>
 
     <!-- Edit Profile Modal -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="editProfileModal"
+      tabindex="-1"
+      aria-labelledby="editProfileModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title fw-bold">
               <i class="bi bi-pencil-square"></i> Edit Profile
             </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
           </div>
 
           <div class="modal-body">
@@ -116,9 +171,9 @@
 
                   <label class="form-label mt-2">Phone</label>
                   {{ profile_form.phone }}
-                  <small class="text-muted">
-                    {{ profile_form.phone.help_text }}
-                  </small>
+                  {% if profile_form.phone.help_text %}
+                    <small class="text-muted">{{ profile_form.phone.help_text }}</small>
+                  {% endif %}
                 </div>
 
                 <!-- Right Column -->
@@ -135,7 +190,7 @@
                   <label class="form-label mt-2">Dietary Preferences</label>
                   {{ profile_form.dietary_needs }}
 
-                  <!-- NEW: Date of Birth -->
+                  <!-- Date of Birth -->
                   <label class="form-label mt-2">Date of Birth</label>
                   {{ profile_form.date_of_birth }}
 
@@ -154,9 +209,18 @@
     </div>
 </div>
 
+<!--
+  If your form uses django-intl-tel-input,
+  ensure you either load its media automatically ({{ form.media }})
+  or include the JS below. For example:
+-->
+{% if profile_form.media %}
+  {{ profile_form.media }}
+{% endif %}
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        const profilePicInput = document.querySelector("#id_profile_image");
+        const profilePicInput = document.querySelector("#profile-pic-input");
         const removePicBtn = document.getElementById("remove-picture-btn");
 
         if (profilePicInput) {
@@ -180,12 +244,12 @@
         }
     });
 </script>
-<!-- Include Parsley.js from a CDN -->
+
+<!-- Include Parsley.js from a CDN (for front-end validation) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
 <script>
     // Optionally, you can customize Parsley further or add additional client-side logic.
     document.addEventListener("DOMContentLoaded", function() {
-        // Initialize Parsley
         var forms = document.querySelectorAll('form[data-parsley-validate]');
         forms.forEach(function(form) {
             window.Parsley.addValidator('custom', {});  // Example if you need custom validators

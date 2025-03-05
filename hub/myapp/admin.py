@@ -1,12 +1,17 @@
 # myapp/admin.py
-from .models import Project
+from .models import Project, Organization
 from django.contrib import admin
 from django.contrib.auth.models import User
 from myapp.models import Profile, Badge
 
+@admin.register(Organization)
+class OrganizationAdmin(admin.ModelAdmin):
+    list_display = ("name", "project_count")
+    search_fields = ("name",)
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'type', 'city', 'country', 'deadline', 'created_at', 'approved')
+    list_display = ('name', 'type', "organization", 'city', 'country', 'deadline', 'created_at', 'approved')
     list_filter = ('type', 'country', 'deadline', 'approved')
     search_fields = ('name', 'description', 'city', 'country', 'submitted_by__username')
     ordering = ("-created_at",)
@@ -17,6 +22,7 @@ class ProfileInline(admin.StackedInline):
     can_delete = False
     verbose_name_plural = "Profile"
     fk_name = "user"
+
 
 # Extend UserAdmin to show Profile fields
 class CustomUserAdmin(admin.ModelAdmin):

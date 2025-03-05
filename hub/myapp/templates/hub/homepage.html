@@ -6,7 +6,7 @@
 <section class="hero-slideshow">
     <div class="slideshow-container">
         <!-- Slide 1 -->
-        <div class="slide fade">
+        <div class="slide">
             <img src="{% static 'images/hero1.jpg' %}" alt="Erasmus Opportunities">
             <div class="hero-text">
                 <h1>Opening Minds</h1>
@@ -15,7 +15,7 @@
         </div>
 
         <!-- Slide 2 -->
-        <div class="slide fade">
+        <div class="slide">
             <img src="{% static 'images/hero2.jpg' %}" alt="Cultural Exchange">
             <div class="hero-text">
                 <h1>Connect & Grow</h1>
@@ -24,7 +24,7 @@
         </div>
 
         <!-- Slide 3 -->
-        <div class="slide fade">
+        <div class="slide">
             <img src="{% static 'images/hero3.jpg' %}" alt="Education & Training">
             <div class="hero-text">
                 <h1>Learn & Explore</h1>
@@ -82,8 +82,39 @@
     </div>
 </section>
 
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="fw-bold">Featured Organizations</h2>
+        <p class="text-muted">Discover organizations that actively list Erasmus+ projects.</p>
+
+        <div id="organizationCarousel" class="carousel" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for organization in organizations %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <img src="{% if organization.logo %}{{ organization.logo.url }}{% else %}{% static 'images/default_org.png' %}{% endif %}"
+                             class="d-block mx-auto" alt="{{ organization.name }}" width="150">
+                        <h5 class="mt-3">{{ organization.name }}</h5>
+                        <p class="text-muted">{{ organization.project_count }} projects listed</p>
+                        {% if organization.website %}
+                            <a href="{{ organization.website }}" target="_blank" class="btn btn-outline-primary btn-sm">Visit Website</a>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <p class="text-muted">No organizations yet.</p>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#organizationCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#organizationCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            </button>
+        </div>
+    </div>
+</section>
+
+
 <!-- Testimonials (Animated & Interactive) -->
-<!-- Testimonials Section -->
 <section class="testimonials-section fade-in">
     <div class="container text-center">
         <h2 class="section-title">What Our Participants Say</h2>
@@ -100,7 +131,6 @@
     </div>
 </section>
 
-
 <!-- Call to Action (Modern, Elegant) -->
 <section class="cta-section fade-in">
     <div class="container text-center">
@@ -110,36 +140,45 @@
     </div>
 </section>
 
-<script> document.addEventListener("DOMContentLoaded", function () {
-    let slideIndex = 0;
-    const slides = document.querySelectorAll(".slide");
-    const dots = document.querySelectorAll(".dot");
+<!-- Hero Slideshow Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let slideIndex = 0;
+        const slides = document.querySelectorAll(".hero-slideshow .slide");
+        const dots = document.querySelectorAll(".hero-slideshow .dot");
 
-    function showSlides() {
-        slides.forEach((slide, i) => {
-            slide.style.opacity = "0";
-            slide.classList.remove("active");
-            dots[i].classList.remove("active");
-        });
+        function showSlides() {
+            slides.forEach((slide, i) => {
+                slide.style.display = "none"; // Hide all slides
+                dots[i].classList.remove("active");
+            });
 
-        slideIndex++;
-        if (slideIndex > slides.length) {
-            slideIndex = 1;
+            slideIndex++;
+            if (slideIndex > slides.length) {
+                slideIndex = 1;
+            }
+
+            slides[slideIndex - 1].style.display = "block"; // Show one slide at a time
+            dots[slideIndex - 1].classList.add("active");
+
+            setTimeout(showSlides, 5000); // Change image every 5 seconds
         }
 
-        slides[slideIndex - 1].style.opacity = "1";
-        slides[slideIndex - 1].classList.add("active");
-        dots[slideIndex - 1].classList.add("active");
+        // For when user clicks a dot
+        window.currentSlide = function (n) {
+            slideIndex = n - 1;
+            showSlides();
+        }
 
-        setTimeout(showSlides, 5000); // Change image every 5 seconds
-    }
-
-    function currentSlide(n) {
-        slideIndex = n - 1;
         showSlides();
-    }
-
-    showSlides();
-});
+    });
 </script>
+
+<!-- Organization Carousel Debugging Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("🚀 Carousel Loaded:", document.getElementById("organizationCarousel"));
+    });
+</script>
+
 {% endblock %}

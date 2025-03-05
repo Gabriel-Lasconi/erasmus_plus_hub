@@ -1,11 +1,24 @@
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.db import models
 from django_countries.fields import CountryField
-from phonenumber_field.modelfields import PhoneNumberField
+from django.db import models
+from django.contrib.auth.models import User
 
-# models.py
+class Organization(models.Model):
+    """Stores details about organizations that post projects."""
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True, null=True)
+    logo = models.ImageField(upload_to="organization_logos/", default="default_org.png")
+    website = models.URLField(blank=True, null=True)
+
+    def project_count(self):
+        """Returns the number of projects associated with this organization."""
+        return self.projects.count()
+
+    def __str__(self):
+        return self.name
+
 
 class Project(models.Model):
     PROJECT_TYPES = [
@@ -26,6 +39,7 @@ class Project(models.Model):
     approved = models.BooleanField(default=False)
     submitted_by = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, related_name="projects")
 
     def __str__(self):
         return self.name
@@ -70,7 +84,7 @@ class Profile(models.Model):
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     country = CountryField(blank=True, null=True)
-    phone = PhoneNumberField(blank=True, null=True)
+    phone = models.CharField(max_length=30, blank=True, null=True)
     date_of_birth = models.DateField(blank=True, null=True)  # <- Make sure this exists
     dietary_needs = models.CharField(max_length=20, choices=DIETARY_CHOICES, default='none')
     bio = models.TextField(blank=True, null=True)
