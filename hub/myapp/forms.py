@@ -1,3 +1,6 @@
+# -------------------------
+# FORMS.PY CODE STARTS HERE
+# -------------------------
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
@@ -15,29 +18,38 @@ class CreateProjectForm(forms.ModelForm):
         required=True
     )
 
+    participating_countries = forms.MultipleChoiceField(
+        choices=Project.COUNTRY_CHOICES,
+        widget=forms.SelectMultiple(attrs={"class": "form-control select2-multi"}),
+        required=False
+    )
+
+
     class Meta:
         model = Project
+        # ------------------------------------------------------------
+        # Include the new 'participating_countries' field in our form:
         fields = [
             "name", "description", "eligibility", "country", "city",
-            "type", "deadline", "infopack_link", "application_link", "organization"
+            "type", "deadline", "infopack_link", "application_link",
+            "organization",  # existing
+            "participating_countries",  # new
         ]
-        # HTML5 'type="date"' triggers a browser datepicker
+        # ------------------------------------------------------------
         widgets = {
             'deadline': forms.DateInput(
                 attrs={
                     'type': 'date',
                     'class': 'form-control'
                 }
-            )
+            ),
         }
 
     def save(self, commit=True, user=None):
         project = super().save(commit=False)
-
         if user:
             project.submitted_by = user.username
             project.approved = user.is_staff
-
         if commit:
             project.save()
         return project
@@ -75,7 +87,6 @@ class ProfileUpdateForm(forms.ModelForm):
       - dietary preferences, etc.
     """
 
-    # Explicitly add the date_of_birth so we can control its widget
     date_of_birth = forms.DateField(
         widget=forms.DateInput(
             attrs={

@@ -20,7 +20,10 @@ class Organization(models.Model):
         return self.name
 
 
-from django.db import models
+# ---------------------------------------------------------
+# Updated: We import the MultiSelectField here
+from multiselectfield import MultiSelectField
+# ---------------------------------------------------------
 
 class Project(models.Model):
     PROJECT_TYPES = [
@@ -99,6 +102,16 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, null=True, related_name="projects")
 
+    # ------------------------------------------------------------------------
+    # NEW FIELD: multiple participating countries (min one, no max)
+    participating_countries = MultiSelectField(
+        choices=COUNTRY_CHOICES,
+        blank=False,
+        null=False,
+        min_choices=1  # ensures at least one selection
+    )
+    # ------------------------------------------------------------------------
+
     def __str__(self):
         return self.name
 
@@ -109,6 +122,7 @@ class Skill(models.Model):
     def __str__(self):
         return self.name
 
+
 class Certification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey('myapp.Project', on_delete=models.CASCADE)
@@ -118,12 +132,15 @@ class Certification(models.Model):
     def __str__(self):
         return f"{self.title} - {self.user.username}"
 
+
 class Badge(models.Model):
     name = models.CharField(max_length=100)
     image = models.ImageField(upload_to="badges/")
     users = models.ManyToManyField(User, related_name="badges")
+
     def __str__(self):
         return self.name
+
 
 class Profile(models.Model):
     GENDER_CHOICES = [
@@ -152,14 +169,15 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username}'s Profile"
 
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     """Automatically create a profile when a user is created."""
     if created:
         Profile.objects.create(user=instance)
 
+
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     """Ensure the profile is saved whenever the user is updated."""
     instance.profile.save()
-

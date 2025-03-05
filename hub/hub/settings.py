@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "django_cleanup",
     "django_countries",
     "phonenumber_field",
+    'multiselectfield',
 ]
 
 PHONENUMBER_DEFAULT_REGION = "RO"             # or whichever country you want as default

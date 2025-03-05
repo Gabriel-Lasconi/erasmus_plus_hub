@@ -12,11 +12,17 @@
             <div class="card project-card shadow-lg p-4">
                 <div class="card-body">
                     <h1 class="card-title fw-bold text-center">{{ project.name }}</h1>
+                    <p class="card-text text-center"> <strong>Type:</strong>{{ project.type }}</p>
                     <hr class="my-4">
 
                     <p class="card-text"><strong>Description:</strong> {{ project.description }}</p>
+                    <p class="card-text"><strong>Eligibility:</strong> {{ project.eligibility }}</p>
                     <p class="card-text"><strong>Country:</strong> {{ project.country }}</p>
+                    <p class="card-text"><strong>City:</strong> {{ project.city }}</p>
+                    <p class="card-text"><strong>Participating Countries:</strong> {{ project.participating_countries }}</p>
                     <p class="card-text"><strong>Deadline:</strong> {{ project.deadline }}</p>
+                    <p class="card-text"><strong>Sending Organization:</strong> {{ project.organization }}</p>
+
 
                     <!-- Buttons -->
                     <div class="d-flex justify-content-center mt-4">

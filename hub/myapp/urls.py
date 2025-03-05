@@ -24,6 +24,10 @@ urlpatterns = [
 
     # Profile
     path('profile/', views.profile, name='profile'),
+
+    # About
+    path('about/', views.about, name='about'),
+
 ]
 
 # Serve media files in development

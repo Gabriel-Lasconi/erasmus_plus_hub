@@ -103,6 +103,9 @@ def filter_projects_view(request):
     """Renders the project filtering page."""
     return render(request, "hub/filter_projects.html")
 
+def about(request):
+    """Renders the about page."""
+    return render(request, "hub/about.html")
 
 @login_required
 def suggest_project(request):

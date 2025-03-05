@@ -1,4 +1,5 @@
 {% extends "hub/base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container py-5">
@@ -11,60 +12,69 @@
                 <form method="post" class="mt-4">
                     {% csrf_token %}
 
-                    <!-- Django Form Fields -->
+                    <!-- Project Name -->
                     <div class="mb-3">
                         <label for="id_name" class="form-label fw-semibold">Project Name</label>
                         {{ form.name }}
                     </div>
 
+                    <!-- Description -->
                     <div class="mb-3">
                         <label for="id_description" class="form-label fw-semibold">Description</label>
                         {{ form.description }}
                     </div>
 
+                    <!-- Eligibility -->
                     <div class="mb-3">
                         <label for="id_eligibility" class="form-label fw-semibold">Eligibility</label>
                         {{ form.eligibility }}
                     </div>
 
+                    <!-- Country / City -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="id_country" class="form-label fw-semibold">Country</label>
                             {{ form.country }}
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="id_city" class="form-label fw-semibold">City</label>
                             {{ form.city }}
                         </div>
                     </div>
 
+                    <!-- Type / Deadline -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="id_type" class="form-label fw-semibold">Project Type</label>
                             {{ form.type }}
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="id_deadline" class="form-label fw-semibold">Deadline</label>
                             {{ form.deadline }}
                         </div>
                     </div>
 
+                    <!-- Infopack & Application Link -->
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="id_infopack_link" class="form-label fw-semibold">Infopack Link</label>
                             {{ form.infopack_link }}
                         </div>
-
                         <div class="col-md-6 mb-3">
                             <label for="id_application_link" class="form-label fw-semibold">Application Link</label>
                             {{ form.application_link }}
                         </div>
                     </div>
 
+                    <!-- Participating Countries -->
                     <div class="mb-3">
-                        <label for="id_application_link" class="form-label fw-semibold">Sending Organization</label>
+                        <label for="id_participating_countries" class="form-label fw-semibold">Participating Countries</label>
+                        {{ form.participating_countries }}
+                    </div>
+
+                    <!-- Organization -->
+                    <div class="mb-3">
+                        <label for="id_organization" class="form-label fw-semibold">Sending Organization</label>
                         {{ form.organization }}
                     </div>
 
@@ -77,4 +87,22 @@
         </div>
     </div>
 </div>
+
+<!-- Load jQuery first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- Load Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+<!-- Initialize Select2 -->
+<script>
+$(document).ready(function() {
+    $('.select2-multi').select2({
+        placeholder: "Select countries",
+        allowClear: true
+    });
+});
+</script>
+
 {% endblock %}

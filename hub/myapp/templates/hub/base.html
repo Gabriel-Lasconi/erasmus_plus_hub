@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/homepage.css' %}">
     <link rel="stylesheet" href="{% static 'css/profile.css' %}">
     <link rel="stylesheet" href="{% static 'css/project_detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
 </head>
 <body>
 
@@ -26,7 +27,7 @@
         <div class="container">
             <!-- Logo -->
             <a class="navbar-brand fw-bold text-dark fs-4" href="{% url 'homepage' %}">
-                ERASMUS+ HUB
+                Erasmus+ Hub
             </a>
 
             <!-- Mobile Toggle -->
@@ -39,7 +40,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'filter_projects' %}">Projects</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'suggest_project' %}">Suggest Project</a></li>
-                    <li class="nav-item"><a class="nav-link fw-semibold" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'about' %}">About</a></li>
                     <li class="nav-item"><a class="nav-link fw-semibold" href="#">Contact</a></li>
 
                     {% if user.is_authenticated %}
