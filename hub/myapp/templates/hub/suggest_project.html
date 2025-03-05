@@ -51,14 +51,21 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="id_infopack_link" class="form-label fw-semibold">Infopack Link</label>
-                        {{ form.infopack_link }}
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="id_infopack_link" class="form-label fw-semibold">Infopack Link</label>
+                            {{ form.infopack_link }}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="id_application_link" class="form-label fw-semibold">Application Link</label>
+                            {{ form.application_link }}
+                        </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="id_application_link" class="form-label fw-semibold">Application Link</label>
-                        {{ form.application_link }}
+                        <label for="id_application_link" class="form-label fw-semibold">Sending Organization</label>
+                        {{ form.organization }}
                     </div>
 
                     <!-- Submit Button -->

@@ -20,6 +20,8 @@ class Organization(models.Model):
         return self.name
 
 
+from django.db import models
+
 class Project(models.Model):
     PROJECT_TYPES = [
         ('Youth Exchange', 'Youth Exchange'),
@@ -27,10 +29,66 @@ class Project(models.Model):
         ('Conference', 'Conference'),
         ('Transnational Meeting', 'Transnational Meeting'),
     ]
+
+    COUNTRY_CHOICES = [
+        ('Albania', 'Albania'),
+        ('Algeria', 'Algeria'),
+        ('Armenia', 'Armenia'),
+        ('Austria', 'Austria'),
+        ('Azerbaijan', 'Azerbaijan'),
+        ('Belgium', 'Belgium'),
+        ('Belarus', 'Belarus'),
+        ('Bosnia and Herzegovina', 'Bosnia and Herzegovina'),
+        ('Bulgaria', 'Bulgaria'),
+        ('Croatia', 'Croatia'),
+        ('Cyprus', 'Cyprus'),
+        ('Czech Republic', 'Czech Republic'),
+        ('Denmark', 'Denmark'),
+        ('Egypt', 'Egypt'),
+        ('Estonia', 'Estonia'),
+        ('Finland', 'Finland'),
+        ('France', 'France'),
+        ('Georgia', 'Georgia'),
+        ('Germany', 'Germany'),
+        ('Greece', 'Greece'),
+        ('Hungary', 'Hungary'),
+        ('Iceland', 'Iceland'),
+        ('Ireland', 'Ireland'),
+        ('Israel', 'Israel'),
+        ('Italy', 'Italy'),
+        ('Jordan', 'Jordan'),
+        ('Kosovo', 'Kosovo'),
+        ('Latvia', 'Latvia'),
+        ('Lebanon', 'Lebanon'),
+        ('Liechtenstein', 'Liechtenstein'),
+        ('Lithuania', 'Lithuania'),
+        ('Luxembourg', 'Luxembourg'),
+        ('Malta', 'Malta'),
+        ('Moldova', 'Moldova'),
+        ('Montenegro', 'Montenegro'),
+        ('Morocco', 'Morocco'),
+        ('Netherlands', 'Netherlands'),
+        ('North Macedonia', 'North Macedonia'),
+        ('Norway', 'Norway'),
+        ('Palestine', 'Palestine'),
+        ('Poland', 'Poland'),
+        ('Portugal', 'Portugal'),
+        ('Romania', 'Romania'),
+        ('Serbia', 'Serbia'),
+        ('Slovakia', 'Slovakia'),
+        ('Slovenia', 'Slovenia'),
+        ('Spain', 'Spain'),
+        ('Sweden', 'Sweden'),
+        ('Syria', 'Syria'),
+        ('Tunisia', 'Tunisia'),
+        ('Türkiye', 'Türkiye'),
+        ('Ukraine', 'Ukraine'),
+    ]
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     eligibility = models.TextField(blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, choices=COUNTRY_CHOICES, blank=True, null=True)
     city = models.CharField(max_length=100, blank=True, null=True)
     type = models.CharField(max_length=50, choices=PROJECT_TYPES)
     deadline = models.DateField(blank=True, null=True)
@@ -39,10 +97,11 @@ class Project(models.Model):
     approved = models.BooleanField(default=False)
     submitted_by = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    organization = models.ForeignKey(Organization, on_delete=models.SET_NULL, null=True, related_name="projects")
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, null=True, related_name="projects")
 
     def __str__(self):
         return self.name
+
 
 class Skill(models.Model):
     name = models.CharField(max_length=100)

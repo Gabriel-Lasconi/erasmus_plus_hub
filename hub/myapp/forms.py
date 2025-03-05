@@ -6,14 +6,30 @@ from intl_tel_input.widgets import IntlTelInputWidget
 from .models import Project, Profile, Organization
 
 class CreateProjectForm(forms.ModelForm):
-    organization = forms.ModelChoiceField(queryset=Organization.objects.all(), required=True)
-    """Form to create projects with automatic approval for staff users."""
+    """
+    Form to create projects with automatic approval for staff users.
+    Also includes a calendar widget for the 'deadline' field.
+    """
+    organization = forms.ModelChoiceField(
+        queryset=Organization.objects.all(),
+        required=True
+    )
+
     class Meta:
         model = Project
         fields = [
             "name", "description", "eligibility", "country", "city",
             "type", "deadline", "infopack_link", "application_link", "organization"
         ]
+        # HTML5 'type="date"' triggers a browser datepicker
+        widgets = {
+            'deadline': forms.DateInput(
+                attrs={
+                    'type': 'date',
+                    'class': 'form-control'
+                }
+            )
+        }
 
     def save(self, commit=True, user=None):
         project = super().save(commit=False)
@@ -50,6 +66,7 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email']
 
+
 class ProfileUpdateForm(forms.ModelForm):
     """
     Form to update Profile details including:
@@ -68,6 +85,7 @@ class ProfileUpdateForm(forms.ModelForm):
         ),
         required=False
     )
+
     phone = forms.CharField(
         required=False,
         widget=IntlTelInputWidget(
@@ -78,6 +96,7 @@ class ProfileUpdateForm(forms.ModelForm):
         ),
         label="Phone number"
     )
+
     class Meta:
         model = Profile
         fields = [
@@ -121,6 +140,7 @@ class ProfileUpdateForm(forms.ModelForm):
                 }
             ),
         }
+
 
 class ProfileImageForm(forms.ModelForm):
     """Separate form to handle just the profile image."""
