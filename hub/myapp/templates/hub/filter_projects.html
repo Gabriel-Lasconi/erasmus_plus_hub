@@ -105,13 +105,16 @@
         <div id="projects-container" class="row">
             {% for project in projects %}
                 {% if project.approved %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card project-card">
-                            <div class="card-body">
+                    <!-- ADDED d-flex classes so all columns/cards have consistent height -->
+                    <div class="col-md-4 mb-4 d-flex">
+                        <div class="card project-card d-flex flex-column">
+                            <div class="card-body d-flex flex-column flex-grow-1">
                                 <h5 class="card-title fw-bold">{{ project.title }}</h5>
                                 <p class="card-text"><strong>Country:</strong> {{ project.country }}</p>
                                 <p class="card-text"><strong>Deadline:</strong> {{ project.deadline }}</p>
-                                <p class="card-text"><strong>Submitted by:</strong> {{ project.submitted_by }}</p>
+                                <p class="card-text"><strong>City:</strong> {{ project.city }}</p>
+                                <p class="card-text"><strong>Participating Countries:</strong> {{ project.participating_countries }}</p>
+                                <p class="card-text mt-auto"><strong>Submitted by:</strong> {{ project.submitted_by }}</p>
                                 <a href="/projects/{{ project.id }}/" class="btn btn-primary w-100">Learn More</a>
                             </div>
                         </div>
@@ -158,14 +161,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         return;
                     }
 
+                    // ADDED d-flex classes in the dynamic HTML as well:
                     projectsContainer.innerHTML += `
-                        <div class="col-md-4 mb-4">
-                            <div class="card project-card">
-                                <div class="card-body">
+                        <div class="col-md-4 mb-4 d-flex">
+                            <div class="card project-card d-flex flex-column">
+                                <div class="card-body d-flex flex-column flex-grow-1">
                                     <h5 class="card-title fw-bold">${project.name}</h5>
                                     <p class="card-text"><strong>Country:</strong> ${project.country}</p>
+                                    <p class="card-text"><strong>City:</strong> ${project.city}</p>
+                                    <p class="card-text"><strong>Participating Countries:</strong> ${project.participating_countries}</p>
                                     <p class="card-text"><strong>Deadline:</strong> ${project.deadline}</p>
-                                    <p class="card-text"><strong>Submitted by:</strong> ${project.submitted_by}</p>
+                                    <p class="card-text mt-auto"><strong>Submitted by:</strong> ${project.submitted_by}</p>
                                     <a href="/projects/${project.id}/" class="btn btn-primary w-100">Learn More</a>
                                 </div>
                             </div>

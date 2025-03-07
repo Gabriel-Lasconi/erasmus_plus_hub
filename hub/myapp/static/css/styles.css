@@ -109,6 +109,11 @@ footer {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Ensure project cards fill available vertical space */
+.project-card.d-flex.flex-column {
+    height: 100%;
+}
+
 /* Suggest Project Form */
 .card {
     border-radius: 12px;

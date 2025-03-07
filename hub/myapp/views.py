@@ -1,8 +1,7 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import logout, login, authenticate
+from django.shortcuts import get_object_or_404
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.db.models import Count  # ✅ Import Count function
-from .models import Organization
+
 
 from .forms import (
     CreateProjectForm,
@@ -21,7 +20,6 @@ def homepage_view(request):
     return render(request, "hub/homepage.html", {"organizations": organizations})
 
 from django.db.models import Count
-from django.shortcuts import render
 from myapp.models import Organization
 
 def homepage_view(request):
@@ -76,6 +74,7 @@ def filter_projects(request):
     type_filter = request.GET.get("type", "")
     country_filter = request.GET.get("country", "")
     deadline_filter = request.GET.get("deadline", "")
+    participating_countries_filter = request.GET.get("participating_countries", "")
 
     if type_filter and type_filter != "All":
         projects = projects.filter(type=type_filter)
@@ -91,12 +90,32 @@ def filter_projects(request):
             "name": project.name,
             "country": project.country,
             "deadline": project.deadline.strftime("%Y-%m-%d"),
+            "city": project.city,
+            "participating_countries": project.participating_countries,
             "submitted_by": project.submitted_by,
         }
         for project in projects
     ]
 
     return JsonResponse(project_list, safe=False)
+
+def filter_projects_api(request):
+    projects = Project.objects.filter(approved=True)
+
+    type_filter = request.GET.get("type", "")
+    country_filter = request.GET.get("country", "")
+    deadline_filter = request.GET.get("deadline", "")
+
+    if type_filter and type_filter != "All":
+        projects = projects.filter(type=type_filter)
+    if country_filter:
+        projects = projects.filter(country=country_filter)
+    if deadline_filter:
+        projects = projects.filter(deadline__lte=deadline_filter)
+
+    project_list = list(projects.values("id", "name", "country", "deadline", "city", "participating_countries" "submitted_by", "approved"))
+    return JsonResponse(project_list, safe=False)
+
 
 
 def filter_projects_view(request):
@@ -198,20 +217,3 @@ def award_badge(user, project):
         messages.success(user, f"You have earned a new badge: {badge_name}")
     else:
         messages.info(user, f"You already have the badge: {badge_name}")
-
-def filter_projects_api(request):
-    projects = Project.objects.filter(approved=True)
-
-    type_filter = request.GET.get("type", "")
-    country_filter = request.GET.get("country", "")
-    deadline_filter = request.GET.get("deadline", "")
-
-    if type_filter and type_filter != "All":
-        projects = projects.filter(type=type_filter)
-    if country_filter:
-        projects = projects.filter(country=country_filter)
-    if deadline_filter:
-        projects = projects.filter(deadline__lte=deadline_filter)
-
-    project_list = list(projects.values("id", "name", "country", "deadline", "submitted_by", "approved"))
-    return JsonResponse(project_list, safe=False)
